@@ -2,19 +2,11 @@
 import csv
 import pandas as pd
 import re
-import matplotlib.pyplot as plt
 from datetime import date, datetime
-import datetime as dt
-import matplotlib.dates as mdates
 import numpy as np
-import matplotlib.pyplot as plt
-import plotly.express as px
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-import matplotlib.pyplot as plt
-import plotly.express as px
-
-
+from PIL import Image
+from wordcloud import WordCloud, ImageColorGenerator, STOPWORDS
+import seaborn as sns
 from pyparsing import Regex
 
 year_p = 0
@@ -125,7 +117,21 @@ naslov_DF.dropna(inplace=True)
 naslov_counter = naslov_DF.value_counts()
 
 from IPython.display import display
-print("\n========= TOP 10 =========\n")
-print(naslov_counter[:10])
+print("\n========= TOP 25 =========\n")
+print(naslov_counter[:25])
 # isplay(naslov_counter.to_string())
 print("\n==========================\n")
+
+naslov_DF.to_csv(r'analiza_rijeci.csv', header=None, index=None, sep=' ', mode='a')
+
+print(naslov_DF)
+print(type(naslov_DF))
+
+text = open('analiza_rijeci.csv', 'r').read()
+wc = WordCloud(background_color = 'white', max_words= 25, collocations= False, width = 3840, height = 2160)
+wc.generate_from_text(text)
+process_word = WordCloud().process_text(text)
+sort = sorted(process_word.items(), key=lambda e:e[1], reverse=True)
+print(sort[:25])
+wc.to_file('Word_cloud_eVaraždin.png')
+
